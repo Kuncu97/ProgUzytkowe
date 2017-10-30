@@ -1,0 +1,3 @@
+# Autor: Dariusz Szlegel
+## Opis projektu:
+Projekt wykonany na potrzeby zajęć.
