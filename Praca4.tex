@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{enumerate}
+\usepackage[pdftex]{hyperref}
+\usepackage{multirow}
+\usepackage{makeidx}
+\usepackage[tableposition=top]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm2e}
+
+\title{Algorytmy Graficzne}
+\author{Szlegel - grupa V}
+\date{2017-11-21}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+Grafika komputerowa — dziedzina informatyki zajmująca się wykorzystaniem
+technik komputerowych do celów wizualizacji artystycznej
+oraz wizualizacji rzeczywistości. Grafika komputerowa jest obecnie
+narzędziem powszechnie stosowanym w nauce, technice oraz rozrywce
+
+\end{abstract}
+
+\tableofcontents
+
+\section{Nazwy kolorów w HTML}
+Specyfikacja języka HTML 4.01 zawiera szesnaście nazwanych kolorów, zawartych
+w tabeli 1.
+
+\section{Algorytm Bresenhama}
+Algorytm Bresenhama służy do rasteryzacji krzywych płaskich, czyli do jak
+najlepszego ich obrazowania na siatce pikseli. Jack Bresenham w 1965 ro-\\
+
+\begin{tabular}{l c r}
+\bfseries Kolor & \bfseries{Nazwa po angielsku} & \bfseries HEX\\ \hline
+cyjan & aqua & \#00FFFF \\
+granatowy & navy & \#000080 \\
+czarny & black & \#000000 \\
+oliwkowy & olive & \#808000 \\
+niebieski & blue & \#0000FF \\
+fioletowy & violet & \#800080 \\ \hline 
+\\ & Tabela 1: Kolory HTML
+\end{tabular} \newline \\
+ku w artykule [1] opracował metodę rasteryzacji odcinków, którą następnie
+przystosowano do rysowania obiektów innego rodzaju (okręgów czy elips).
+
+\subsection{Algorytm Bresenhama dla elipsy}
+\subsubsection{Założenia}
+\begin{enumerate}
+    \item Elipsa ma osie zgodne z osiami układu współrzędnych,
+    \item Półosie elipsy mają długości $a$ (wzdłuż osi $OX$) i $b$ (wzdłuż $OY$),
+    \item Rozważamy elipsę w I ćwiartce układu współrzędnych
+    \item Środkiem symetrii elipsy jest środek układu współrzędnych,
+    \item Rysowanie elipsy zaczynamy od punktu (0,$b$),
+    \item  W każdym kroku stawiamy symetrycznie 4 punkty elipsy,
+        \begin{enumerate}[(a)]
+            \item początkową osią wiodącą jest oś $OX$,
+            \item w punkcie zmiany osi wiodącej, współczynnik nachylenia stycznej \\
+                  do elipsy wynosi -1(tg135$^\circ$).
+        \end{enumerate}
+\end{enumerate}
+
+\subsection{Algorytm i jego działanie}
+Przybliżana elipsa ma równanie:
+$$\frac{x^2}{a^2}+\frac{y^2}{b^2}-1=0.$$
+
+O wyborze piksela decydować będzie wartość funkcji
+$$F(x,y)=a^2b^2\left(\frac{x^2}{a^2}+\frac{y^2}{b^2}-1\right)=b^2x^2+a^2y^2-a^2b^2$$
+w punkcie środkowym $M$ położonym pomiędzy alternatywnymi pikselami.\\
+Gdy osią wiodąca jest $OX$ oblicza się
+$$F(M)=F\left(x_i+1,y_i-\frac{1}{2}\right)$$
+
+Przy wyborze następnego piksela (rysunek 1) $P_{i+1} = S$ czyli $x_{i+1} =$ \\
+$x_i,y_{i+1}=y_i-1$ wartość zmiennej decyzyjnej wynosi: \\ \\
+$d_{i+1}=F\left(x_{i+1}+\frac{1}{2},y_{i+1}-1\right)=$\\
+
+$=b^2(x_{i+1}+1/2)^2+a^2(y_{i+1}-1)^2-a^2b^2=d_i-2a^2y_{i+1}+a^2$ \\
+\rule[0.05cm]{\textwidth}{1pt} 
+\textbf{Algorytm 1} Algorytm Bresenhama \\
+\rule[0.05cm]{\textwidth}{1pt}
+\textbf{Założenia:} Środek elipsy jest w (0,0), promienie $a,b \in\mathbb{N}$ \\
+\textbf{Wynik:} Elipsa została wyświetlona
+
+\begin{algorithmic}
+\STATE{$i \leftarrow 0, j \leftarrow b, f \leftarrow 4b^2-4a^2 b+a^2$}
+\STATE{writePixel$(i,j)$}
+\WHILE{$b^2 i\leq a^2 j$}
+\IF{$f>0$}
+\STATE{$f \leftarrow f+8b^2 i-8a^2 j+12b^2+8a^2$}
+\STATE{$j \leftarrow j-1$}
+\ELSE{$f \leftarrow f+8b^2 i+12b^2$}
+\ENDIF
+\STATE{$i \leftarrow i+1$}
+\STATE{writePixel$(i,j)$}
+\ENDWHILE
+\end{algorithmic}
+\rule[0.05cm]{\textwidth}{1pt}
+
+Powyższy krok został zaimplementowany w linijce 5 algorytmu 1.
+
+\section{Kwaterniony}
+\subsection{Kwaternion jako macierz rzeczywista}
+Kwaterniony zdefiniowane są jako macierze z przestrzeni $M_{2\times2} (\mathbb{C}).$ Innym \\
+sposobem zapisu macierzowego jest [2]:
+
+$$ \begin{equation}
+q= \left[\begin{array}{cccc}
+         a & b & -d & -c\\
+         -b & a & -c & d\\
+         d & c & a & b\\
+         c & -d & -b & a
+         \end{array}\right] dla\ a,b,c,d \in \mathbb{R}
+\end{equation} $$
+\subsection{Wyznacznik i moduł}
+Wyznacznik kwaternionu q, określonego przez (1):
+$$det\ q=a^2+b^2+c^2+d^2$$
+
+
+\end{document}
